@@ -1,0 +1,1282 @@
+type AgendaTVProduct {
+  infos: TvProduct
+  product: Product
+}
+
+type AnnouncementBanner {
+  body: String
+  capping: Int
+  color: String
+  createdAt: Date
+  endAt: Date
+  id: ID
+  startAt: Date
+  state: String
+  updatedAt: Date
+}
+
+type ApiList {
+  cover: String
+  date_creation: Date
+  description: String
+  id: Int!
+  products: ApiProduct
+  title: String
+  universe: String
+  user: ApiUser
+}
+
+type ApiListResponse {
+  current_page: Int!
+  lists: ApiList
+  total_lists: Int!
+}
+
+type ApiProduct {
+  actors: ApiProductContact
+  annotation: String
+  authors: ApiProductContact
+  channels: ApiProductContact
+  cover: String
+  creators: ApiProductContact
+  directors: ApiProductContact
+  genres: [String]
+  id: Int!
+  original_title: String
+  pencillers: ApiProductContact
+  position: Int
+  publishers: ApiProductContact
+  subtitle: String
+  synopsis: String
+  title: String
+  translators: ApiProductContact
+  url_reviews: String
+  writers: ApiProductContact
+}
+
+type ApiProductContact {
+  id: Int!
+  label: String
+  url: String
+}
+
+type ApiUser {
+  avatar: String
+  email: String
+  id: Int!
+  url: String
+  username: String
+}
+
+type Award {
+  festivalId: Int!
+  festivalName: String!
+  id: Int!
+  isCasting: Int!
+  name: String!
+}
+
+type Badge {
+  count: Int
+  description: String
+  id: Int!
+  image: String
+  label: String
+  stage: Int
+  url: String
+  userInfos(userId: Int!): BadgeUserInfos
+}
+
+type BadgeUserInfos {
+  badgeId: Int
+  dateCreation: Date
+  id: Int
+  position: Int
+  userId: Int
+}
+
+type BarChartItem {
+  providerId: Int!
+  total: Int!
+}
+
+type BasicBlock {
+  description: String
+  id: String!
+  media: String
+  title: String
+}
+
+type CannesInfos {
+  dateProjection: String
+  inCompetition: Int
+}
+
+type Collection {
+  filters: CollectionFilters
+  products: Product
+  total: Int
+  tvProducts: AgendaTVProduct
+  yearStats: CollectionYearStat
+}
+
+type CollectionFilter {
+  count: Int
+  label: String
+  value: String
+}
+
+type CollectionFilters {
+  action: CollectionFilter
+  category: CollectionFilter
+  gamesystem: CollectionFilter
+  genre: CollectionFilter
+  releaseDate: CollectionFilter
+  universe: CollectionFilter
+}
+
+type CollectionUniverseStat {
+  count: Int
+  universe: Int
+}
+
+type CollectionYearStat {
+  stats: CollectionUniverseStat
+  year: Int
+}
+
+type Comment {
+  author: User
+  content: String!
+  dateCreation: Date
+  deleted: Boolean
+  id: Int!
+}
+
+type CommentableResource {
+  dummy: String
+}
+
+type CommentPrivacy {
+  dummy: String
+}
+
+type Comments {
+  commentPrivacy: CommentableResource
+  isFollow: Boolean
+  items: Comment
+  total: Int
+}
+
+type CompareRatings {
+  target: User
+  versus: VersusRatings
+}
+
+type Contact {
+  backdrop: String
+  bestProducts: Product
+  country: [String]
+  coworkers: Contact
+  gender: Int
+  id: Int!
+  isForbidden: Boolean
+  likeCount: Int
+  liked: Boolean
+  likeScouts(limit: Int!, offset: Int!): User
+  likeUsers(limit: Int!, offset: Int!): User
+  lists(limit: Int!, offset: Int!, universe: Int!): UserList
+  name: String!
+  nationality: [String]
+  picture: String
+  popularTracks: Product
+  productCount: Int
+  products(limit: Int!, offset: Int!, order: Int!, univers: Int!): Product
+  productsList(limit: Int!, offset: Int!, order: Int!, profession: Int!, universe: Int!): Products
+  productStats: ProductStatsByUniverse
+  profession: [String]
+  professionsAdmin: [String]
+  shortBio: String
+  url: String
+  userInfos(id: Int!, username: Int!): ContactUserInfos
+}
+
+type ContactChannel {
+  id: Int!
+  name: String
+  url: String
+}
+
+type ContactListItem {
+  annotation: String
+  contact: Contact
+  position: Int
+}
+
+type ContactProfessionTotal {
+  tag: String
+  total: Int
+  universe: Int
+}
+
+type ContactUserInfos {
+  dateLiked: Date
+  liked: Boolean
+}
+
+type Country {
+  id: Int!
+  name: String!
+}
+
+type Date {
+  dummy: String
+}
+
+type DoneResult {
+  success: Boolean
+}
+
+type EnterContest {
+  campaignId: Int
+  contestId: Int
+  contestLabel: String
+  dateCreation: Date
+  dateEnd: Date
+  json: JsonContest
+}
+
+type FeedItem {
+  badge: Badge
+  commentCount: Int
+  comments: Comments
+  compiledHtml: String
+  contact: Contact
+  dateCreation: Date
+  id: Int!
+  isCurrent: Boolean
+  isFollow: Boolean
+  isLike: Boolean
+  isLiked: Boolean
+  isRecommended: Boolean
+  isReview: Boolean
+  isWishList: Boolean
+  likeCount: Int
+  likers: User
+  lists: List
+  product: Product
+  rating: Int
+  review: Review
+  scout: User
+  shout: Shout
+  typeId: Int
+  universe: Int
+  user: User
+  userInfos: ProductUserInfos
+}
+
+type FeedStory {
+  compiledHtml: String
+  feeds: FeedItem
+  groupType: String
+  id: Int!
+}
+
+type FirstProduct {
+  id: Int!
+  medias: FirstProductMedias
+  slug: String!
+  title: String
+  universe: Int!
+}
+
+type FirstProductListItem {
+  annotation: String
+  product: FirstProduct
+}
+
+type FirstProductMedias {
+  picture: String
+}
+
+type Franchise {
+  id: Int!
+  label: String
+  slug: String
+  url: String
+}
+
+type GameSystem {
+  id: Int!
+  label: String
+}
+
+type Genre {
+  id: Int!
+  label: String!
+  slug: String
+  url: String
+}
+
+type GenreProducts {
+  products: Product
+  total: Int!
+}
+
+type Genres {
+  id: Int!
+  label: String
+}
+
+type HasNotification {
+  message: Boolean!
+  notification: Boolean!
+}
+
+type JSON {
+  dummy: String
+}
+
+type JsonContest {
+  disclaimer: String
+  win: String
+}
+
+type Keyword {
+  covariance: Float
+  id: Int
+  intuitive: Int
+  keyword: String
+  label: String
+  mcc: Float
+  state: Int
+  tagId: Int
+}
+
+type Label {
+  award: Award
+  carac: String
+  contact: Contact
+  count: Int
+  display: String
+  id: Int!
+  instance: String
+  kind: String
+  percentage: Int
+  rank: Int
+  text: String
+  title: String
+}
+
+type List {
+  author: User
+  commentCount: Int
+  commentPrivacy: CommentPrivacy
+  cover: String
+  dateCreation: Date
+  description: String
+  firstProducts: FirstProductListItem
+  hits: Int
+  id: Int!
+  isDisliked: Boolean
+  isLiked: Boolean
+  isOfficial: Boolean
+  isOrdered: Boolean
+  isPrivate: Boolean
+  label: String
+  likers(limit: Int!, offset: Int!): User
+  productCount: Int
+  products(limit: Int!, offset: Int!, sortBy: Int!): ListItem
+  productsList(limit: Int!, offset: Int!, order: Int!, sortBy: Int!): ListProducts
+  slug: String
+  subtype: String
+  universe: Int
+  url: String
+}
+
+type ListContacts {
+  items: ContactListItem
+  total: Int
+}
+
+type ListItem {
+  annotation: String
+  product: Product
+  total: Int
+}
+
+type ListProducts {
+  items: ProductListItem
+  total: Int
+}
+
+type ListsResults {
+  items: List
+  limit: Int
+  offset: Int
+  total: Int!
+}
+
+type Me {
+  email: String!
+  firstName: String
+  id: Int!
+  lastName: String
+  medias: UserMedias
+  name: String!
+  rights: Int!
+  username: String!
+  validEmail: Boolean
+  zipCode: Int
+}
+
+type Message {
+  author: User
+  content: String
+  dateCreation: Date
+  id: Int
+  topic: Topic
+  topicId: Int
+}
+
+type Mood {
+  id: Int!
+  label: String!
+  warnerInfos: WarnerInfos
+}
+
+type Mutation {
+  addDevice: Boolean!
+  addIssue: String
+  addTag: Int!
+  archiveTopic(id: Int!): Topic
+  commentAdd(content: Int!, resourceId: String!, resourceType: String!): Comment
+  contactLike(id: Int!): Contact
+  contactUnlike(id: Int!): Contact
+  deleteTag: Boolean!
+  deleteTopic(topicId: Int!): Topic
+  editNewsletter: Boolean!
+  enterContest(address: String!, city: String!, countryId: String!, email: String!, extrafield: String!, firstname: String!, lastname: String!, notificationId: String!, zipcode: String!): EnterContest
+  feedLike(id: Int!): FeedItem
+  incrementHits: Boolean!
+  productDone(productId: Int!): DoneResult
+  productRate(formatId: Int!, productId: Int!, rating: Int!): Product
+  productReject: Boolean!
+  productUndone(productId: Int!): DoneResult
+  productUnrate: Boolean!
+  productUnwish: Boolean!
+  productWish: Boolean!
+  quitTopic: Boolean!
+  readTopic(topicId: Int!): Topic
+  reviewLike(reviewId: Int!): Review
+  sendNewsletter: Boolean!
+  setDateDone: Boolean!
+  shoutEdit: Boolean!
+  shoutHide(shoutId: Int!, userId: Int!): Shout
+  shoutLike(shoutId: Int!): Shout
+  unsubscribeEmail: Boolean!
+  updateTag: Boolean!
+  uploadMedia(picture: UploadInput!): Picture
+  userListEdit(commentPrivacy: Int!, description: Int!, isOrdered: Int!, isPublic: Int!, listId: Int!, title: Int!): UserList
+  verifyEmail(cookieRef: String!): User
+}
+
+type Newsletter {
+  content: String
+  dateCreation: Date
+  id: Int!
+  title: String
+}
+
+type NextEpisodes {
+  dummy: String
+}
+
+type NikonProduct {
+  id: Int!
+  nikonId: Int
+  product: Product
+  year: Int!
+}
+
+type Notification {
+  dateCreation: Date
+  dateRead: Date
+  id: Int
+  isUnread: Int
+  message: String
+  notificationTypeId: Int
+  userId: Int
+}
+
+input NotificationTypeInput {
+  dummy: String
+}
+
+type PeopleTeam {
+  description: String
+  firstname: String
+  job: String
+  lastname: String
+  scId: Int!
+  username: String
+}
+
+type Picture {
+  id: Int!
+  url: String!
+}
+
+type Pictures {
+  backdrops: [String]
+  posters: [String]
+  screenshots: [String]
+  total: Int!
+}
+
+type Poll {
+  alternativeTitle: String
+  badge: Badge
+  cover: String
+  description: String
+  firstProducts: FirstProductListItem
+  id: Int!
+  label: String!
+  participationCount: Int
+  products: Product
+  rebounds: Poll
+  universe: Int
+  url: String!
+  userAnswer: PollAnswer
+}
+
+type PollAnswer {
+  author: User
+  commentCount: Int
+  commentPrivacy: CommentPrivacy
+  comments(limit: Int!, offset: Int!, sortBy: Int!): Comment
+  cover: String
+  dateCreation: Date
+  description: String
+  firstProducts: FirstProductListItem
+  hits: Int
+  id: Int!
+  isDisliked: Boolean
+  isLiked: Boolean
+  isOfficial: Boolean
+  isOrdered: Boolean
+  isPrivate: Boolean
+  label: String
+  likers(limit: Int!, offset: Int!): User
+  limitation: Int
+  parent: Poll
+  productCount: Int
+  products(limit: Int!, offset: Int!, sortBy: Int!): ListItem
+  productsList(limit: Int!, offset: Int!, order: Int!, sortBy: Int!): ListProducts
+  slug: String
+  subtype: String
+  universe: Int
+  url: String
+  userAnswer: PollAnswer
+}
+
+type Polls {
+  items: Poll
+  limit: Int!
+  offset: Int!
+  total: Int!
+}
+
+type PremiumBlock {
+  basicBlock: BasicBlock
+  id: Int!
+  link: String
+  position: Int
+  type: String
+}
+
+type PremiumButton {
+  id: String!
+  label: String
+  link: String
+  pixelMobile: String
+  pixelTablet: String
+  scriptTablet: String
+}
+
+type PremiumVideo {
+  id: String!
+  media: String
+  position: Int
+}
+
+type Product {
+  actors: ProductContact
+  albums: Product
+  alternativeTitles: [String]
+  artists: ProductContact
+  authors: ProductContact
+  budget: String
+  cannes: CannesInfos
+  category: String
+  channel: String
+  characters: ProductContact
+  countries: Country
+  creators: ProductContact
+  dateCreation: Date
+  developers: ProductContact
+  directors: ProductContact
+  displayedYear: Int
+  distributors: ProductContact
+  duration: Int
+  episodes: Product
+  franchises: Franchise
+  genres: [String]
+  genresInfos: Genre
+  id: Int!
+  illustrators: ProductContact
+  isbn: [String]
+  isLocked: Boolean
+  labels: Label
+  listCount: Int
+  lists: ListsResults
+  medias: ProductMedia
+  multiplayer: String
+  musicLabels: ProductContact
+  myRating: Int
+  nbRating: Int
+  nextEpisodes: NextEpisodes
+  originalRun: Date
+  originalTitle: String
+  pegiGambling: String
+  pegiLanguage: String
+  pegiRating: String
+  pegiViolence: String
+  pencillers: ProductContact
+  pictures: Pictures
+  polls: ProductPoll
+  premium: ProductPremium
+  producers: ProductContact
+  productionStatus: String
+  providers: ProductProvider
+  publishers: ProductContact
+  rating: Float
+  review(userId: Int!): Review
+  reviews(filter: Int!, limit: Int!, offset: Int!, sortBy: Int!): Reviews
+  scoutsActions: ScoutActions
+  scoutsRatings: UserRating
+  screenwriters: ProductContact
+  season: Product
+  seasonId: Int
+  seasons: Product
+  shouts: Shouts
+  slug: String!
+  soundtracks: Soundtrack
+  stats: ProductStats
+  statsDetails: ProductStatsDetails
+  subtitle: String
+  synopsis: String
+  title: String!
+  translators: ProductContact
+  tvChannel: ContactChannel
+  tvGuide: TvProduct
+  universe: Int!
+  url: String!
+  userInfos: ProductUserInfos
+  userRating: Int
+  vodPlatforms: VodProduct
+  warnerInfos: WarnerProductInfos
+  yearOfProduction: Int
+}
+
+type ProductAction {
+  dummy: String
+}
+
+type ProductContact {
+  contact: Contact
+  name: String
+  person_id: Int!
+  position: Int!
+  role: String
+  url: String
+}
+
+type ProductListItem {
+  annotation: String
+  position: Int
+  product: Product
+}
+
+type ProductMedia {
+  backdrop: String
+  picture: String
+  screenshot: String
+  videos: Video
+}
+
+type ProductPoll {
+  poll: Poll
+  rank: Int
+}
+
+type ProductPremium {
+  blocks: PremiumBlock
+  buttons: PremiumButton
+  cover: String
+  id: String!
+  logo: String
+  state: Int
+  videos: PremiumVideo
+}
+
+type ProductProvider {
+  appUrl: ProviderAppUrl
+  name: String
+  providerId: Int!
+  webUrl: String!
+}
+
+type Products {
+  items: Product
+  limit: Int!
+  offset: Int!
+  professionCounts: ContactProfessionTotal
+  total: Int
+}
+
+type ProductsBlock {
+  dummy: String
+}
+
+type ProductStats {
+  currentCount: Int
+  recommendCount: Int
+  reviewCount: Int
+  wishCount: Int
+}
+
+type ProductStatsByUniverse {
+  count: Int
+  universe: String
+}
+
+type ProductStatsDetails {
+  split: StatsSplit
+}
+
+type ProductUserInfos {
+  dateDone: Date
+  gameSystem: GameSystem
+  id: Int
+  isCurrent: Boolean!
+  isDone: Boolean!
+  isListed: Boolean!
+  isRecommended: Boolean!
+  isRejected: Boolean!
+  isReviewed: Boolean!
+  isWished: Boolean!
+  lists(limit: Int!, offset: Int!): List
+  productId: Int
+  rating: Int
+  review: Review
+  userId: Int
+}
+
+type Provider {
+  id: Int!
+  name: String!
+}
+
+type ProviderAppUrl {
+  android: String
+  ios: String
+}
+
+type Query {
+  adminNewsletter(newsletterId: Int!): Newsletter
+  adminNewsletters: Newsletter
+  announcementBanners: AnnouncementBanner
+  apiList: ApiListResponse
+  B2BStats(filters: [Int]!, providerIds: [Int]!): StatsResult
+  badge(id: Int!): Badge
+  comments(id: Int!, limit: Int!, offset: Int!, sortBy: Int!): Comments
+  compareRatings(targetId: Int!): CompareRatings
+  contact(id: Int!): Contact
+  countries: Country
+  culte: Product
+  everymovie: Product
+  feed: FeedStory
+  feedActivity(feedId: Int!): FeedStory
+  feedAgenda: Product
+  feedLikers(feedId: Int!, likeCount: Int!): User
+  genreProducts(genre: String!, limit: String!, offset: String!, universe: Int!): GenreProducts
+  genres(universe: String!): Genres
+  hasNotification: HasNotification
+  healthCheck: Boolean!
+  hotCanape: Product
+  hotCinema: Product
+  keyword(id: Int!): Keyword
+  keywords: Keyword
+  likers: RelatedUsers
+  me: Me
+  messages(limit: Int!, offset: Int!, topicId: Int!): Message
+  mood(id: Int!): Mood
+  moods: Mood
+  myWishes: Product
+  nikonProducts(year: Int!): NikonProduct
+  pepite: Product
+  poll(id: Int!, limit: Int!, offset: Int!): Poll
+  pollAnswer(id: Int!): PollAnswer
+  polls: Polls
+  product(id: Int!): Product
+  products(ids: [Int]!): Product
+  provider(id: Int!): Provider
+  recommendedUsers(username: String!): User
+  results: ResultSet
+  review(id: Int!, isPublished: Int!): Review
+  scTeam(status: Int!): PeopleTeam
+  searchList(keywords: String!, limit: String!, universe: String!, userId: String!): SearchList
+  searchPolls(from: String!, keywords: String!, limit: String!, universe: String!): SearchPolls
+  searchTags(limit: String!, text: String!): Tag
+  searchUser(keywords: String!, limit: String!, mode: String!): SearchUser
+  shout(id: Int!): Shout
+  shouts(limit: Int!, offset: Int!, productId: Int!): Shouts
+  sponsoredFeed: FeedStory
+  streaming: Streaming
+  tag(id: Int!): Tag
+  tagCategories: TagCategory
+  tags: Tag
+  tokens: Tokens
+  top: Product
+  topic(id: Int!): Topic
+  topics: Topic
+  topPolls: Poll
+  user: User
+  userList(id: Int!): UserList
+  userNotifications(limit: NotificationTypeInput!, offset: NotificationTypeInput!, type: NotificationTypeInput!): Notification
+  versus: Versus
+}
+
+type RelatedUsers {
+  total: Int
+  users: User
+}
+
+type ResultSet {
+  facet(identifier: String!, query: String!, size: String!): SKFacetSet
+  facets: SKFacetSet
+  hits: SKHitResults
+  summary: SKSummary
+}
+
+type Review {
+  author: User
+  body: String
+  bodyShort: String
+  bodyText: String
+  commentCount: Int!
+  commentPrivacy: CommentPrivacy
+  comments(limit: Int!, offset: Int!, sortBy: Int!): Comment
+  dateCreation: Date
+  deleted: Boolean
+  gameSystem: GameSystem
+  hits: Int!
+  id: Int!
+  isDisliked: Boolean!
+  isLiked: Boolean!
+  isPublished: Int
+  likeCount: Int!
+  likers(limit: Int!, offset: Int!): User
+  product: Product
+  rating: Int
+  title: String
+  url: String!
+}
+
+type Reviews {
+  items: Review
+  limit: Int!
+  offset: Int!
+  topReviews: TopReviews
+  total: Int
+}
+
+type ScoutActions {
+  action: ProductAction
+  stats: ScoutActionsStat
+  total: Int
+  userActions: UserAction
+}
+
+type ScoutActionsStat {
+  currentCount: Int
+  recommendCount: Int
+  wishCount: Int
+}
+
+type SearchList {
+  pollAnswers: PollAnswer
+  polls: Poll
+  userLists: UserList
+}
+
+type SearchPolls {
+  polls: Poll
+}
+
+type SearchUser {
+  results: User
+}
+
+type Shout {
+  author: User
+  body: String
+  commentCount: Int
+  comments(limit: Int!, offset: Int!, sortBy: Int!): Comment
+  dateCreation: Date!
+  id: Int!
+  isLiked: Boolean!
+  likeCount: Int
+  likers(limit: Int!, offset: Int!): User
+  product: Product
+  productId: Int
+  rating: Int
+  url: String
+}
+
+type Shouts {
+  items: Shout
+  limit: Int
+  offset: Int
+  product: Product
+  total: Int
+}
+
+type ShoutsUser {
+  items: Shout
+  limit: Int
+  offset: Int
+  total: Int
+}
+
+type SKFacetSet {
+  display: String
+  entries: SKFacetSetEntry
+  identifier: String
+  label: String
+  type: String
+}
+
+type SKFacetSetEntry {
+  count: Float
+  id: ID!
+  isSelected: Boolean
+  label: String
+}
+
+type SKHit {
+  id: ID!
+}
+
+type SKHitResults {
+  items: SKHit
+  page: SKPageInfo
+  sortedBy: String
+}
+
+type SKPageInfo {
+  from: Float
+  size: Float
+  total: Float
+  totalPages: Float
+}
+
+type SKSortOption {
+  id: ID!
+  label: String!
+}
+
+type SKSummary {
+  query: String
+  sortOptions: SKSortOption
+  total: Float!
+}
+
+type Soundtrack {
+  id: Int!
+  product: Product
+  title: String
+  url: String
+}
+
+type StackBar {
+  data: JSON
+  maxValue: Int
+  stackKeys: [String]
+  xKeys: [String]
+  xLabel: String
+}
+
+type StatsResult {
+  indexIn: BarChartItem
+  indexOut: BarChartItem
+  popularityType: StackBar
+  productsBlock: ProductsBlock
+  productsList: Product
+  ratingType: StackBar
+  releaseDate: StackBar
+}
+
+type StatsSplit {
+  rating1: Int
+  rating2: Int
+  rating3: Int
+  rating4: Int
+  rating5: Int
+}
+
+type Streaming {
+  news: Product
+  originals: Product
+  wishes: Product
+}
+
+type Subscription {
+  newMessage(topicId: Int!): Message
+}
+
+type Tag {
+  category: String
+  id: Int!
+  importance: Int!
+  label: String
+}
+
+type TagCategory {
+  id: Int!
+  label: String
+}
+
+type Tokens {
+  refreshToken: String
+  token: String
+}
+
+type Topic {
+  asAdmin: Boolean
+  author: User
+  id: Int!
+  isRead: Boolean
+  messages: Message
+  receivers: User
+  relatedList: UserList
+  state: Int
+}
+
+type TopReviews {
+  negative: Review
+  positive: Review
+}
+
+type TvChannel {
+  id: Int!
+  label: String
+}
+
+type TvProduct {
+  channel: TvChannel
+  showTimes: TvShowtime
+}
+
+type TvShowtime {
+  dateEnd: Date
+  dateStart: Date
+  id: Int!
+}
+
+type UniverseCount {
+  count: Int!
+  universe: String!
+}
+
+input UploadInput {
+  dummy: String
+}
+
+type User {
+  badges(limit: String!, offset: String!): UserBadge
+  collection(action: String!, categoryId: String!, genreId: String!, isAgenda: String!, isDiary: String!, keywords: String!, limit: String!, month: String!, offset: String!, order: String!, universe: String!, versus: String!, year: String!): Collection
+  description: String
+  followers(limit: String!, offset: String!, sortBy: String!): User
+  following: Boolean
+  id: Int!
+  isBlocked: Boolean
+  isScout: Boolean
+  likes(limit: String!, offset: String!): UserLikes
+  lists(limit: String!, offset: String!, universe: String!): UserList
+  listsCreated(keywords: String!, limit: String!, listTypes: String!, notEmpty: String!, offset: String!, order: String!, showLiked: String!, universe: String!): ListsResults
+  medias: UserMedias
+  name: String!
+  pollAnswers(limit: String!, offset: String!, universe: String!): PollAnswer
+  ratings(limit: String!, offset: String!, sortBy: String!, universe: String!): Product
+  reviewCount: Int
+  reviews(limit: String!, offset: String!, order: String!): UserReviews
+  rights: Int
+  scouts(limit: String!, offset: String!, sortBy: String!): User
+  settings: UserSettings
+  shouts(limit: String!, offset: String!, order: String!): ShoutsUser
+  stats: UserStats
+  url: String!
+  username: String!
+  wishCounts: UniverseCount
+  wishes(limit: String!, offset: String!, sortBy: String!, universe: String!): Product
+}
+
+type UserAction {
+  user: User
+}
+
+type UserBadge {
+  badge: Badge
+  badgeId: Int!
+  dateCreation: Date
+  position: Int
+  userId: Int!
+}
+
+type UserLikes {
+  contacts: Contact
+  total: Int
+}
+
+type UserList {
+  author: User
+  commentCount: Int
+  commentPrivacy: CommentPrivacy
+  comments(limit: Int!, offset: Int!, sortBy: Int!): Comment
+  contacts(limit: Int!, offset: Int!, sortBy: Int!): ContactListItem
+  contactsList(limit: Int!, offset: Int!, order: Int!, sortBy: Int!): ListContacts
+  cover: String
+  dateCreation: Date
+  description: String
+  firstProducts: FirstProductListItem
+  hits: Int
+  id: Int!
+  isDisliked: Boolean
+  isLiked: Boolean
+  isOfficial: Boolean
+  isOrdered: Boolean
+  isPrivate: Boolean
+  label: String
+  likers(limit: Int!, offset: Int!): User
+  parent: UserList
+  productCount: Int
+  products(limit: Int!, offset: Int!, sortBy: Int!): ListItem
+  productsList(limit: Int!, offset: Int!, order: Int!, sortBy: Int!): ListProducts
+  slug: String
+  subtype: String
+  universe: Int
+  url: String
+}
+
+type UserMedias {
+  avatar: String
+  backdrop: String
+}
+
+type UserRating {
+  rating: Int!
+  user: User
+}
+
+type UserReviews {
+  hasNext: Boolean
+  items: Review
+  limit: Int
+  offset: Int
+}
+
+type UserSettings {
+  about: String
+  birthDate: Date
+  country: String
+  displayedName: String
+  email: String
+  firstName: String
+  gender: String
+  lastName: String
+  showAge: Boolean
+  urlWebsite: String
+  username: String
+  zipCode: String
+}
+
+type UserStats {
+  collectionCount: Int!
+  diaryCount: Int!
+  id: Int!
+  listCount: Int!
+  pollCount: Int!
+  reviewCount: Int!
+  topCount: Int!
+}
+
+type Versus {
+  alone: Product
+  difference: Product
+  heLikes: Product
+  perfectMatch: Product
+  solo: Product
+  user: User
+  wishes: Product
+}
+
+type VersusRatings {
+  count: Int!
+  products: Product
+  title: String!
+}
+
+type Video {
+  id: String!
+  image: String
+  provider: String!
+  type: String!
+}
+
+type VodEditor {
+  id: Int!
+  idCnc: Int
+  label: String
+}
+
+type VodProduct {
+  modalities: VodProductModality
+  platform: VodEditor
+}
+
+type VodProductModality {
+  dateEnd: Date
+  dateStart: Date
+  id: Int!
+  iptv: String
+  language: String
+  mode: String
+  price: Float
+  quality: String
+  url: String!
+}
+
+type WarnerInfos {
+  description: String
+  id: Int!
+  picture: String
+  selectionId: String
+  url: String
+}
+
+type WarnerProductInfos {
+  version: String
+  youtubeLink: String
+}
