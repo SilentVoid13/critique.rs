@@ -16,13 +16,15 @@
     flake-utils.lib.eachDefaultSystem (
       system: let
         pkgs = import nixpkgs {inherit system;};
+        buildInputs = with pkgs; [
+          cargo
+          rustc
+          openssl
+          pkg-config
+        ];
       in {
         devShells.default = pkgs.mkShell {
-          packages = with pkgs; [
-            cargo
-            rustc
-            openssl
-          ];
+          buildInputs = buildInputs;
         };
       }
     );
