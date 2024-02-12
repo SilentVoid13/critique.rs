@@ -1,14 +1,17 @@
-pub fn add(left: usize, right: usize) -> usize {
-    left + right
+use reqwest::blocking::Client;
+
+pub struct CritiqueClient {
+    client: Client,
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
+impl CritiqueClient {
+    pub fn new() -> Self {
+        Self {
+            client: Client::new(),
+        }
+    }
 
-    #[test]
-    fn it_works() {
-        let result = add(2, 2);
-        assert_eq!(result, 4);
+    pub fn get_user_collection(&self, user_id: &str) -> Result<reqwest::Response, reqwest::Error> {
+        todo!();
     }
 }
