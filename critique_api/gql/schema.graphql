@@ -114,7 +114,7 @@ type CannesInfos {
 
 type Collection {
   filters: CollectionFilters
-  products: Product
+  products: [Product]
   total: Int
   tvProducts: AgendaTVProduct
   yearStats: CollectionYearStat
@@ -648,6 +648,7 @@ type Product {
   nextEpisodes: NextEpisodes
   originalRun: Date
   originalTitle: String
+  otherUserInfos(username: String!): ProductUserInfos
   pegiGambling: String
   pegiLanguage: String
   pegiRating: String
@@ -766,7 +767,7 @@ type ProductStatsDetails {
 }
 
 type ProductUserInfos {
-  dateDone: Date
+  dateDone: String
   gameSystem: GameSystem
   id: Int
   isCurrent: Boolean!

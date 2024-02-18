@@ -1,0 +1,27 @@
+query UserCollectionQuery(
+    $username: String!
+    $limit: Int
+    $offset: Int
+    $universe: String
+) {
+    user(username: $username) {
+        collection(limit:$limit offset:$offset universe:$universe) {
+            products { 
+                id
+                url
+                title
+                originalTitle
+                yearOfProduction
+                rating
+                universe
+                otherUserInfos(username:$username) {
+                    rating
+                    dateDone
+                    review {
+                        bodyText
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,12 @@
+[package]
+name = "critique_api"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+graphql_client = { version = "0.13.0", features = ["graphql_query_derive", "reqwest-blocking"] }
+reqwest = { version = "0.11.24", features = ["blocking", "json"] }
+serde = { version = "1.0.196", features = ["derive"] }
+thiserror = "1.0.57"
