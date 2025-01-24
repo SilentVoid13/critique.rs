@@ -1,7 +1,7 @@
 mod error;
 
 use graphql_client::{GraphQLQuery, Response};
-use reqwest::blocking::Client;
+use reqwest::{blocking::{Client, ClientBuilder}, header::HeaderMap};
 
 use error::Result;
 
@@ -19,6 +19,7 @@ pub struct CritiqueClient {
     client: Client,
 }
 
+#[derive(Debug, Clone, Copy)]
 pub enum MediaUniverse {
     Film = 1,
     Book = 2,
@@ -47,8 +48,12 @@ impl CritiqueClient {
     const GQL_ENDPOINT: &'static str = "https://apollo.senscritique.com/";
 
     pub fn new() -> Self {
+        let mut headers = HeaderMap::new();
+        headers.insert("user-agent", "Mozilla/5.0".parse().unwrap());
+
+        let client = ClientBuilder::new().default_headers(headers).build().unwrap();
         Self {
-            client: Client::new(),
+            client,
         }
     }
 
