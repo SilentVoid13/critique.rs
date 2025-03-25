@@ -2,6 +2,7 @@ mod args;
 
 use clap::Parser;
 use color_eyre::{eyre::OptionExt, Result};
+use critique_api::MediaUniverse;
 
 #[derive(serde::Serialize)]
 struct Record {
@@ -26,12 +27,7 @@ fn main() -> Result<()> {
 
     println!("[*] Fetching user collection...");
 
-    let res = client.get_user_collection(
-        &args.username,
-        None,
-        None,
-        Some(critique_api::MediaUniverse::Film),
-    )?;
+    let res = client.get_user_collection(&args.username, None, None, Some(args.media_type))?;
     let film_collection = res
         .user
         .ok_or_eyre("no user in response")?

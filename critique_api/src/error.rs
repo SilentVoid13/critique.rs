@@ -8,4 +8,6 @@ pub enum CritiqueError {
     HttpError(#[from] reqwest::Error),
     #[error("No data in response")]
     NoDataInResponse,
+    #[error("Invalid media universe: {0}")]
+    InvalidMediaUniverse(String),
 }

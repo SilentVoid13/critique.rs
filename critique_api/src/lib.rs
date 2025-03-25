@@ -44,6 +44,24 @@ impl ToString for MediaUniverse {
     }
 }
 
+impl TryFrom<&str> for MediaUniverse {
+    type Error = CritiqueError;
+
+    fn try_from(s: &str) -> Result<Self> {
+        Ok(match s {
+            "movie" => MediaUniverse::Film,
+            "book" => MediaUniverse::Book,
+            "game" => MediaUniverse::Videogame,
+            "tvShow" => MediaUniverse::TvShow,
+            "comicBook" => MediaUniverse::ComicBook,
+            "musicAlbum" => MediaUniverse::MusicAlbum,
+            "musicTrack" => MediaUniverse::MusicTrack,
+            "film" => MediaUniverse::Film,
+            _ => return Err(CritiqueError::InvalidMediaUniverse(s.to_string())),
+        })
+    }
+}
+
 impl CritiqueClient {
     const GQL_ENDPOINT: &'static str = "https://apollo.senscritique.com/";
 
