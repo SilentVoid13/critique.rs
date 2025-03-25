@@ -27,27 +27,7 @@ fn main() -> Result<()> {
 
     println!("[*] Fetching user collection...");
 
-    let media_universe;
-    if args.media_type == "film" {
-        media_universe = MediaUniverse::Film;
-    } else if args.media_type == "tvShow" {
-        media_universe = MediaUniverse::TvShow;
-    } else if args.media_type == "game" {
-        media_universe = MediaUniverse::Videogame;
-    } else if args.media_type == "book" {
-        media_universe = MediaUniverse::Book;
-    } else if args.media_type == "comicBook" {
-        media_universe = MediaUniverse::ComicBook;
-    } else if args.media_type == "musicAlbum" {
-        media_universe = MediaUniverse::MusicAlbum;
-    } else if args.media_type == "musicTrack" {
-        media_universe = MediaUniverse::MusicTrack;
-    } else {
-        eprintln!("[-] Unsupported media type: {}", args.media_type);
-        std::process::exit(1);
-    }
-
-    let res = client.get_user_collection(&args.username, None, None, Some(media_universe))?;
+    let res = client.get_user_collection(&args.username, None, None, Some(args.media_type))?;
     let film_collection = res
         .user
         .ok_or_eyre("no user in response")?
