@@ -2,7 +2,6 @@ mod args;
 
 use clap::Parser;
 use color_eyre::{eyre::OptionExt, Result};
-use critique_api::MediaUniverse;
 
 #[derive(serde::Serialize)]
 struct Record {

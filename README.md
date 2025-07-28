@@ -23,9 +23,23 @@ Arguments:
   <USERNAME>  SensCritique username
 
 Options:
-  -w, --with-reviews     Add reviews to the output
-  -o, --output <OUTPUT>  Output CSV file [default: output.csv]
-  -h, --help             Print help
+  -m, --media-type <MEDIA_TYPE>  Media type [default: film]
+  -w, --with-reviews             Add reviews to the output
+  -o, --output <OUTPUT>          Output CSV file [default: output.csv]
+  -h, --help                     Print help
+```
+
+## critique_random
+
+picks a random wish in the user's wishlist for a given media type:
+
+```bash
+# default media type is films
+cargo run -- <username>
+cargo run -- <username> -m book
+# make 5 random tv show picks
+cargo run -- <username> -m tvShow -c 5
+cargo run -- <username> -m game
 ```
 
 ## Contributing

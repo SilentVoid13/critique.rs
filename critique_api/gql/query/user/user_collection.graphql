@@ -17,6 +17,7 @@ query UserCollectionQuery(
                 otherUserInfos(username:$username) {
                     rating
                     dateDone
+                    isWished
                     review {
                         bodyText
                     }

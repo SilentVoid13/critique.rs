@@ -1,5 +1,5 @@
 [package]
-name = "critique2boxd"
+name = "critique_random"
 version = "0.1.0"
 edition = "2021"
 
@@ -8,6 +8,5 @@ edition = "2021"
 [dependencies]
 clap = { workspace = true, features = ["derive"] }
 color-eyre = { workspace = true }
-csv = { workspace = true }
-serde = { workspace = true, features = ["derive"] }
+rand = { workspace = true, features = ["alloc"] }
 critique_api = { path = "../critique_api" }

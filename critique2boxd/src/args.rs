@@ -18,5 +18,5 @@ pub struct CliArgs {
 }
 
 fn parse_media_universe(s: &str) -> Result<MediaUniverse, String> {
-    MediaUniverse::try_from(s).map_err(|e| "Valid values: movie, book, game, tvShow, comicBook, musicAlbum, musicTrack".to_string())
+    MediaUniverse::try_from(s).map_err(|_| "Valid values: movie, book, game, tvShow, comicBook, musicAlbum, musicTrack".to_string())
 }
