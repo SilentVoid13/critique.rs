@@ -14,19 +14,15 @@ Contributions to expand this set of queries are welcome.
 
 ## critique2boxd
 
-`critique2boxd` is a utility tool to export a SensCritique user collection to a CSV file that can later be imported to Letterboxd ([https://letterboxd.com/import/](https://letterboxd.com/import/)).
+export a SensCritique user collection to a CSV file that can later be imported to Letterboxd ([https://letterboxd.com/import/](https://letterboxd.com/import/)).
 
-```txt
-Usage: critique2boxd [OPTIONS] <USERNAME>
-
-Arguments:
-  <USERNAME>  SensCritique username
-
-Options:
-  -m, --media-type <MEDIA_TYPE>  Media type [default: film]
-  -w, --with-reviews             Add reviews to the output
-  -o, --output <OUTPUT>          Output CSV file [default: output.csv]
-  -h, --help                     Print help
+```bash
+# default media type is films
+cargo run --bin critique2boxd -- <username> -o output.csv
+# export series
+cargo run --bin critique2boxd -- <username> -m tvShow -o output.csv
+# include reviews in export
+cargo run --bin critique2boxd -- <username> -w -o output.csv
 ```
 
 ## critique_random
@@ -35,11 +31,11 @@ picks a random wish in the user's wishlist for a given media type:
 
 ```bash
 # default media type is films
-cargo run -- <username>
-cargo run -- <username> -m book
+cargo run --bin critique_random -- <username>
+cargo run --bin critique_random -- <username> -m book
 # make 5 random tv show picks
-cargo run -- <username> -m tvShow -c 5
-cargo run -- <username> -m game
+cargo run --bin critique_random -- <username> -m tvShow -c 5
+cargo run --bin critique_random -- <username> -m game
 ```
 
 ## Contributing
