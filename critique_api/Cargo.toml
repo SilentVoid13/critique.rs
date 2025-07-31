@@ -2,11 +2,14 @@
 name = "critique_api"
 version = "0.1.0"
 edition = "2024"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+license-file = "../LICENSE.txt"
+description = "Interface to the SensCritique API"
+repository = "https://github.com/SilentVoid13/critique.rs"
+categories = ["api-bindings"]
+keywords = ["api", "senscritique"]
 
 [dependencies]
-graphql_client = { version = "0.13.0", features = ["graphql_query_derive", "reqwest-blocking"] }
-reqwest = { version = "0.11.24", features = ["blocking", "json"] }
-serde = { version = "1.0.196", features = ["derive"] }
-thiserror = "1.0.57"
+graphql_client = { workspace = true, features = ["graphql_query_derive", "reqwest-blocking"] }
+reqwest = { workspace = true, features = ["blocking", "json"] }
+serde = { workspace = true, features = ["derive"] }
+thiserror = { workspace = true }
