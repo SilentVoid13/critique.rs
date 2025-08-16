@@ -10,4 +10,5 @@ clap = { workspace = true, features = ["derive"] }
 color-eyre = { workspace = true }
 csv = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
+tokio = { workspace = true, features = ["macros"] }
 critique_api = { path = "../critique_api" }

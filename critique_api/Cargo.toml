@@ -9,7 +9,7 @@ categories = ["api-bindings"]
 keywords = ["api", "senscritique"]
 
 [dependencies]
-graphql_client = { workspace = true, features = ["graphql_query_derive", "reqwest-blocking"] }
-reqwest = { workspace = true, features = ["blocking", "json"] }
+graphql_client = { workspace = true, features = ["graphql_query_derive"] }
+reqwest = { workspace = true, features = ["json"] }
 serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }

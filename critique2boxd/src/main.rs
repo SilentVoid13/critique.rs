@@ -1,7 +1,7 @@
 mod args;
 
 use clap::Parser;
-use color_eyre::{eyre::OptionExt, Result};
+use color_eyre::{Result, eyre::OptionExt};
 
 #[derive(serde::Serialize)]
 struct Record {
@@ -17,7 +17,8 @@ struct Record {
     review: Option<String>,
 }
 
-fn main() -> Result<()> {
+#[tokio::main(flavor = "current_thread")]
+async fn main() -> Result<()> {
     color_eyre::install()?;
 
     let args = args::CliArgs::parse();
@@ -26,7 +27,9 @@ fn main() -> Result<()> {
 
     println!("[*] Fetching user collection...");
 
-    let res = client.get_user_collection(&args.username, None, None, Some(args.media_type))?;
+    let res = client
+        .get_user_collection(&args.username, None, None, Some(args.media_type))
+        .await?;
     let film_collection = res
         .user
         .ok_or_eyre("no user in response")?

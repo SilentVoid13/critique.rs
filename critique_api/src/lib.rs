@@ -1,11 +1,10 @@
 mod error;
 
 use graphql_client::{GraphQLQuery, Response};
-use reqwest::{blocking::{Client, ClientBuilder}, header::HeaderMap};
-
-use error::Result;
+use reqwest::{Client, header::HeaderMap};
 
 use crate::error::CritiqueError;
+use error::Result;
 
 #[derive(GraphQLQuery)]
 #[graphql(
@@ -49,14 +48,13 @@ impl TryFrom<&str> for MediaUniverse {
 
     fn try_from(s: &str) -> Result<Self> {
         Ok(match s {
-            "movie" => MediaUniverse::Film,
+            "movie" | "film" => MediaUniverse::Film,
             "book" => MediaUniverse::Book,
             "game" => MediaUniverse::Videogame,
             "tvShow" => MediaUniverse::TvShow,
             "comicBook" => MediaUniverse::ComicBook,
             "musicAlbum" => MediaUniverse::MusicAlbum,
             "musicTrack" => MediaUniverse::MusicTrack,
-            "film" => MediaUniverse::Film,
             _ => return Err(CritiqueError::InvalidMediaUniverse(s.to_string())),
         })
     }
@@ -69,13 +67,18 @@ impl CritiqueClient {
         let mut headers = HeaderMap::new();
         headers.insert("user-agent", "Mozilla/5.0".parse().unwrap());
 
-        let client = ClientBuilder::new().default_headers(headers).build().unwrap();
-        Self {
-            client,
-        }
+        let client = Client::builder().default_headers(headers).build().unwrap();
+
+        Self { client }
     }
 
-    pub fn get_user_collection(&self, username: &str, limit: Option<i64>, offset: Option<i64>, universe: Option<MediaUniverse>) -> Result<user_collection_query::ResponseData> {
+    pub async fn get_user_collection(
+        &self,
+        username: &str,
+        limit: Option<i64>,
+        offset: Option<i64>,
+        universe: Option<MediaUniverse>,
+    ) -> Result<user_collection_query::ResponseData> {
         let variables = user_collection_query::Variables {
             username: username.to_string(),
             limit,
@@ -83,12 +86,15 @@ impl CritiqueClient {
             universe: universe.map(|u| u.to_string()),
         };
         let req_body = UserCollectionQuery::build_query(variables);
+
         let res = self
             .client
             .post(Self::GQL_ENDPOINT)
             .json(&req_body)
-            .send()?;
-        let gql_res: Response<user_collection_query::ResponseData> = res.json()?;
+            .send()
+            .await?;
+
+        let gql_res: Response<user_collection_query::ResponseData> = res.json().await?;
         let user_collection = gql_res.data.ok_or(CritiqueError::NoDataInResponse)?;
         Ok(user_collection)
     }
@@ -96,12 +102,19 @@ impl CritiqueClient {
 
 #[cfg(test)]
 mod tests {
-    use crate::{CritiqueClient, MediaUniverse};
+    use super::*;
+    use futures::executor::block_on;
 
     #[test]
-    pub fn test_get_user_collection() {
+    fn test_get_user_collection() {
         let client = CritiqueClient::new();
-        let res = client.get_user_collection("Sergent_Pepper", Some(100), None, Some(MediaUniverse::ComicBook)).unwrap();
+        let res = block_on(client.get_user_collection(
+            "Sergent_Pepper",
+            Some(100),
+            None,
+            Some(MediaUniverse::ComicBook),
+        ))
+        .unwrap();
         dbg!(res);
     }
 }

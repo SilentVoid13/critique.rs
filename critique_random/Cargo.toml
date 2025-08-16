@@ -9,4 +9,5 @@ edition = "2024"
 clap = { workspace = true, features = ["derive"] }
 color-eyre = { workspace = true }
 rand = { workspace = true, features = ["alloc"] }
+tokio = { workspace = true, features = ["macros"] }
 critique_api = { path = "../critique_api" }
