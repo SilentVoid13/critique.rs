@@ -27,7 +27,9 @@ cargo run --bin critique2boxd -- <username> -w -o output.csv
 
 ## critique_random
 
-picks a random wish in the user's wishlist for a given media type:
+CLI version of [https://silentvoid13.github.io/critique.rs/](https://silentvoid13.github.io/critique.rs/)
+
+Picks a random wish in the user's wishlist for a given media type:
 
 ```bash
 # default media type is films

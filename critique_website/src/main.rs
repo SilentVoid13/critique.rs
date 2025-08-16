@@ -1,5 +1,8 @@
-use dioxus::logger::tracing;
-use dioxus::prelude::*;
+use critique_api::user_collection_query::{
+    UserCollectionQueryUserCollectionProducts, UserCollectionQueryUserCollectionProductsMedias,
+    UserCollectionQueryUserCollectionProductsOtherUserInfos,
+};
+use dioxus::{logger::tracing, prelude::*};
 
 use critique_api::MediaUniverse;
 
@@ -60,7 +63,6 @@ fn ScPicker() -> Element {
             let pick = wishlist.remove(r as usize);
             picks.push(pick);
         }
-        tracing::info!("picks: {:?}", picks);
     };
 
     rsx! {
@@ -76,7 +78,9 @@ fn ScPicker() -> Element {
                 autofocus: "true",
             }
             div { class: "flex justify-center content-center items-center gap-1",
-                p { "Number of picks: "}
+                p { class: "text-secondary",
+                    "Number of picks: "
+                }
                 input {
                     class: "input w-20",
                     r#type: "number",
@@ -90,20 +94,57 @@ fn ScPicker() -> Element {
             }
 
             button {
-                class: "button mt-5",
+                class: "button",
+                "data-style": "outline",
                 onclick: move |_| roll_wheel(),
-                "Random Picks"
+
+                svg {
+                    xmlns: "http://www.w3.org/2000/svg",
+                    width: "24",
+                    height: "24",
+                    view_box: "0 0 24 24",
+                    fill: "none",
+                    stroke: "currentColor",
+                    stroke_width: "2",
+                    stroke_linecap: "round",
+                    stroke_linejoin: "round",
+
+                    path {
+                        d: "M2 18h1.4c1.3 0 2.5-.6 3.3-1.7l6.1-8.6c.7-1.1 2-1.7 3.3-1.7H22",
+                    }
+                    path {
+                        d: "m18 2 4 4-4 4",
+                    }
+                    path {
+                        d: "M2 6h1.9c1.5 0 2.9.9 3.6 2.2",
+                    }
+                    path {
+                        d: "M22 18h-5.9c-1.3 0-2.6-.7-3.3-1.8l-.5-.8",
+                    }
+                    path {
+                        d: "m18 14 4 4-4 4",
+                    }
+                }
             }
 
-            div { class: "flex gap-2",
+            div { class: "flex gap-2 mt-3",
                 for pick in picks.iter() {
-                    div { class: "flex flex-col",
-                        p { class: "text-xl", "{pick.title"}
-                        if let Some(year) = pick.year_of_production {
-                            p { "Year: {year}" }
+                    a {
+                        class: "group rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition duration-300 transform hover:-translate-y-1",
+                        href: "https://senscritique.com{pick.url}",
+
+                        div { class: "flex flex-col h-full",
+                            img {
+                                src: pick.medias.as_ref().unwrap().picture.as_ref().unwrap().clone(),
+                                class: "w-[300px] h-[400px] self-center object-cover transition duration-300 group-hover:scale-105"
+                            }
+                            div { class: "p-3 flex flex-col flex-1",
+                                p { class: "text-lg font-semibold text-primary group-hover:text-indigo-300 transition", "{pick.title}"}
+                                if let Some(year) = pick.year_of_production {
+                                    p { class: "text-sm text-gray-400", "{year}" }
+                                }
+                            }
                         }
-                        a { href: "https://senscritique.com{pick.url}" }
-                        img { src: pick.medias.as_ref().unwrap().picture.as_ref().unwrap().clone() }
                     }
                 }
             }
