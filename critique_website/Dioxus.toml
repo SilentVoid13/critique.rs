@@ -2,3 +2,4 @@
 
 [web.app]
 title = "critique.rs"
+base_path = "critique.rs"

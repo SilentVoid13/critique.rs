@@ -159,7 +159,7 @@
             window.showDXToast = showDXToast;
             window.closeDXToast = closeDXToast;
         </script>
-    <link rel="preload" as="fetch" type="application/wasm" href="/./wasm/critique_website_bg.wasm" crossorigin></head>
+    <meta name="DIOXUS_ASSET_ROOT" content="critique.rs"><link rel="preload" as="fetch" type="application/wasm" href="/critique.rs/wasm/critique_website_bg.wasm" crossorigin></head>
     <body>
         <div id="__dx-toast" class="dx-toast">
             <div id="__dx-toast-inner" class="dx-toast-inner" style="right:-1000px;">
@@ -180,6 +180,6 @@
             </div>
         </div>
         <div id="main"></div>
-    <script type="module" async src="/./wasm/critique_website.js"></script>
+    <script type="module" async src="/critique.rs/wasm/critique_website.js"></script>
             </body>
 </html>

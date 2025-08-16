@@ -1976,7 +1976,7 @@ export default __wbg_init;
 window.__wasm_split_main_initSync = initSync;
 
 // Actually perform the load
-__wbg_init({module_or_path: "/./wasm/critique_website_bg.wasm"}).then((wasm) => {
+__wbg_init({module_or_path: "/critique.rs/wasm/critique_website_bg.wasm"}).then((wasm) => {
     // assign this module to be accessible globally
     window.__dx_mainWasm = wasm;
     window.__dx_mainInit = __wbg_init;
