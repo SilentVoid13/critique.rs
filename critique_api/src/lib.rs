@@ -2,6 +2,7 @@ mod error;
 
 use graphql_client::{GraphQLQuery, Response};
 use reqwest::{Client, header::HeaderMap};
+use strum::{Display, EnumIter, EnumString, IntoEnumIterator};
 
 use crate::error::CritiqueError;
 use error::Result;
@@ -18,10 +19,13 @@ pub struct CritiqueClient {
     client: Client,
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, EnumString, EnumIter, Display)]
+#[strum(serialize_all = "camelCase")]
 pub enum MediaUniverse {
+    #[strum(serialize = "movie")]
     Film = 1,
     Book = 2,
+    #[strum(serialize = "game")]
     Videogame = 3,
     TvShow = 4,
     ComicBook = 5,
@@ -29,35 +33,8 @@ pub enum MediaUniverse {
     MusicTrack = 8,
 }
 
-impl ToString for MediaUniverse {
-    fn to_string(&self) -> String {
-        match self {
-            MediaUniverse::Film => "movie".to_string(),
-            MediaUniverse::Book => "book".to_string(),
-            MediaUniverse::Videogame => "game".to_string(),
-            MediaUniverse::TvShow => "tvShow".to_string(),
-            MediaUniverse::ComicBook => "comicBook".to_string(),
-            MediaUniverse::MusicAlbum => "musicAlbum".to_string(),
-            MediaUniverse::MusicTrack => "musicTrack".to_string(),
-        }
-    }
-}
-
-impl TryFrom<&str> for MediaUniverse {
-    type Error = CritiqueError;
-
-    fn try_from(s: &str) -> Result<Self> {
-        Ok(match s {
-            "movie" | "film" => MediaUniverse::Film,
-            "book" => MediaUniverse::Book,
-            "game" => MediaUniverse::Videogame,
-            "tvShow" => MediaUniverse::TvShow,
-            "comicBook" => MediaUniverse::ComicBook,
-            "musicAlbum" => MediaUniverse::MusicAlbum,
-            "musicTrack" => MediaUniverse::MusicTrack,
-            _ => return Err(CritiqueError::InvalidMediaUniverse(s.to_string())),
-        })
-    }
+pub fn valid_media_universes() -> Vec<String> {
+    MediaUniverse::iter().map(|m| m.to_string()).collect()
 }
 
 impl CritiqueClient {
@@ -103,18 +80,19 @@ impl CritiqueClient {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use futures::executor::block_on;
 
-    #[test]
-    fn test_get_user_collection() {
+    #[tokio::test]
+    async fn test_get_user_collection() {
         let client = CritiqueClient::new();
-        let res = block_on(client.get_user_collection(
-            "Sergent_Pepper",
-            Some(100),
-            None,
-            Some(MediaUniverse::ComicBook),
-        ))
-        .unwrap();
+        let res = client
+            .get_user_collection(
+                "Sergent_Pepper",
+                Some(100),
+                None,
+                Some(MediaUniverse::ComicBook),
+            )
+            .await
+            .unwrap();
         dbg!(res);
     }
 }

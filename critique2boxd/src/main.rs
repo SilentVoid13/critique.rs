@@ -39,11 +39,11 @@ async fn main() -> Result<()> {
         .ok_or_eyre("no products in response")?;
 
     // Only export films with a rating
-    for product in film_collection.into_iter().filter_map(|p| p).filter(|p| {
-        if let Some(info) = p.other_user_infos.as_ref() {
-            if info.rating.is_some() {
-                return true;
-            }
+    for product in film_collection.into_iter().flatten().filter(|p| {
+        if let Some(info) = p.other_user_infos.as_ref()
+            && info.rating.is_some()
+        {
+            return true;
         }
         false
     }) {
@@ -57,7 +57,7 @@ async fn main() -> Result<()> {
         let rating = user_info.rating.unwrap();
         let watch_date = user_info.date_done;
         let review = if args.with_reviews {
-            user_info.review.map(|r| r.body_text).flatten()
+            user_info.review.and_then(|r| r.body_text)
         } else {
             None
         };

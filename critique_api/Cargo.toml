@@ -13,3 +13,7 @@ graphql_client = { workspace = true, features = ["graphql_query_derive"] }
 reqwest = { workspace = true, features = ["json"] }
 serde = { workspace = true, features = ["derive"] }
 thiserror = { workspace = true }
+strum = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+tokio = { workspace = true }

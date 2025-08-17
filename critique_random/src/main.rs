@@ -1,6 +1,6 @@
 use clap::Parser;
 use color_eyre::{Result, eyre::OptionExt};
-use critique_api::MediaUniverse;
+use critique_api::{MediaUniverse, valid_media_universes};
 use rand::seq::IteratorRandom;
 
 #[derive(Debug, Parser)]
@@ -8,7 +8,7 @@ pub struct CliArgs {
     /// SensCritique username
     pub username: String,
     /// Media type
-    #[arg(short, long, default_value = "film", value_parser = parse_media_universe)]
+    #[arg(short, long, default_value = "movie", value_parser = parse_media_universe)]
     pub media_type: MediaUniverse,
     /// Number of items to randomly pick
     #[arg(short, long, default_value = "1")]
@@ -16,9 +16,8 @@ pub struct CliArgs {
 }
 
 fn parse_media_universe(s: &str) -> Result<MediaUniverse, String> {
-    MediaUniverse::try_from(s).map_err(|_| {
-        "Valid values: movie, book, game, tvShow, comicBook, musicAlbum, musicTrack".to_string()
-    })
+    MediaUniverse::try_from(s)
+        .map_err(|_| format!("Valid values: {}", valid_media_universes().join(", ")))
 }
 
 #[tokio::main(flavor = "current_thread")]
@@ -55,7 +54,7 @@ async fn main() -> Result<()> {
         .choose_multiple(&mut rng, args.count);
 
     for pick in picks {
-        println!("[+] Random {}: {}", args.media_type.to_string(), pick.title);
+        println!("[+] Random {}: {}", args.media_type, pick.title);
         if let Some(year) = pick.year_of_production {
             println!("    Year: {}", year);
         }

@@ -1,10 +1,8 @@
-use critique_api::user_collection_query::{
-    UserCollectionQueryUserCollectionProducts, UserCollectionQueryUserCollectionProductsMedias,
-    UserCollectionQueryUserCollectionProductsOtherUserInfos,
-};
-use dioxus::{logger::tracing, prelude::*};
+use std::str::FromStr;
 
 use critique_api::MediaUniverse;
+use dioxus::prelude::*;
+use strum::IntoEnumIterator;
 
 fn main() {
     dioxus::launch(App);
@@ -24,30 +22,35 @@ fn App() -> Element {
 fn ScPicker() -> Element {
     let mut username = use_signal(String::new);
     let mut count = use_signal(|| 3);
-    let media_type = MediaUniverse::Film;
     let mut picks = use_signal(Vec::new);
+    let mut cur_universe = use_signal(|| MediaUniverse::Film);
+    let mut error_msg = use_signal(String::new);
 
-    let roll_wheel = move || async move {
+    let new_picks = move || async move {
+        picks.clear();
+        error_msg.write().clear();
+
         if username().is_empty() {
+            error_msg.set("Please enter a username".into());
             return;
         }
 
         let client = critique_api::CritiqueClient::new();
-
         let Ok(res) = client
-            .get_user_collection(&username(), None, None, Some(media_type))
+            .get_user_collection(&username(), None, None, Some(cur_universe()))
             .await
         else {
+            error_msg.set("Couldn't retrieve user collection".into());
             return;
         };
         let Some(collection) = res.user.and_then(|u| u.collection?.products) else {
+            error_msg.set("Found an empty collection".into());
             return;
         };
         let mut wishlist = collection
             .into_iter()
             .filter_map(|m| {
                 let m = m?;
-                let _ = m.medias.as_ref()?.picture.as_ref()?;
                 let _ = m.medias.as_ref()?.picture.as_ref()?;
                 if m.other_user_infos.as_ref()?.is_wished {
                     Some(m)
@@ -57,13 +60,31 @@ fn ScPicker() -> Element {
             })
             .collect::<Vec<_>>();
 
-        picks.clear();
-        for _ in 0..count() {
+        if wishlist.is_empty() {
+            error_msg.set("Found an empty wishlist".into());
+            return;
+        }
+
+        let mut i = 0;
+        while i < count() && !wishlist.is_empty() {
             let r = js_sys::Math::random() * wishlist.len() as f64;
             let pick = wishlist.remove(r as usize);
             picks.push(pick);
+            i += 1;
         }
     };
+
+    let media_options = MediaUniverse::iter().enumerate().map(move |(i, o)| {
+        rsx! {
+            option {
+                key: "{i}",
+                value: o.to_string(),
+                disabled: o == cur_universe(),
+                selected: o == cur_universe(),
+                {o.to_string()}
+            }
+        }
+    });
 
     rsx! {
         div { class: "pt-5 h-screen w-full flex flex-col justify-start items-center gap-3",
@@ -92,11 +113,20 @@ fn ScPicker() -> Element {
                     },
                 }
             }
+            select {
+                onchange: move |evt| {
+                    let Ok(universe) = MediaUniverse::from_str(&evt.value()) else {
+                        return;
+                    };
+                    cur_universe.set(universe);
+                },
+                {media_options}
+            }
 
             button {
-                class: "button",
+                class: "button mt-3 hover:shadow-[0_0_20px_rgba(59,130,246,0.7)] transition duration-300",
                 "data-style": "outline",
-                onclick: move |_| roll_wheel(),
+                onclick: move |_| new_picks(),
 
                 svg {
                     xmlns: "http://www.w3.org/2000/svg",
@@ -127,6 +157,9 @@ fn ScPicker() -> Element {
                 }
             }
 
+            p { class: "text-xl text-red-500",
+                {error_msg}
+            }
             div { class: "flex gap-2 mt-3",
                 for pick in picks.iter() {
                     a {
